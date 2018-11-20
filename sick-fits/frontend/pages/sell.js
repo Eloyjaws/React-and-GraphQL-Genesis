@@ -1,6 +1,8 @@
+import styled from 'styled-components';
+
 const Sell = props => {
   return (
-    <div>
+    <div>  
       <p>No no no</p>
     </div>
   );
