@@ -1,10 +1,8 @@
-import styled from 'styled-components';
+import CreateItem from '../components/CreateItem';
 
 const Sell = props => {
   return (
-    <div>  
-      <p>No no no</p>
-    </div>
+    <CreateItem />
   );
 };
 
