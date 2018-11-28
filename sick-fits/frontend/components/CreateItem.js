@@ -31,14 +31,32 @@ class CreateItem extends Component {
     title: "Waffle Card",
     description: "iHop $30 card",
     price: 30,
-    image: "card.jpg",
-    largeImage: "card-large.jpg"
+    image: "",
+    largeImage: ""
   };
 
   handleChange = e => {
     const {name, type, value} = e.target;
     const val = type === 'number' ? parseFloat(value) : value;
     this.setState({ [name] : val});
+  }
+
+  uploadFile = async (e) => {
+    console.log(e);
+    const files = e.target.files;
+    const data = new FormData();
+    data.append('file', files[0]);
+    data.append('upload_preset', 'sickfits');
+    const res = await fetch('https://api.cloudinary.com/v1_1/e3/image/upload', {
+      method: 'POST',
+      body: data
+    });
+    const file = await res.json();
+    console.log({file});
+    this.setState({
+      image: file.secure_url,
+      largeImage: file.eager[0].secure_url
+    })
   }
 
   render() {
@@ -60,6 +78,18 @@ class CreateItem extends Component {
             <h2>Sell an Item</h2>
             <Error error={error}/>
             <fieldset disabled={loading} aria-busy={loading}>
+              <label htmlFor="file">
+                Image
+                <input
+                  type="file"
+                  name="file"
+                  id="file"
+                  placeholder="Upload an image"
+                  required
+                  onChange={this.uploadFile}
+                />
+                {this.state.image && <img width="150" src={this.state.image} alt="Upload image preview"/>}
+              </label>
               <label htmlFor="title">
                 Title
                 <input
